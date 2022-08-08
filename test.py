@@ -1,2 +1,2 @@
 class A:
-    print(test)
+    print("test")
