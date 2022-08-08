@@ -1,2 +1,5 @@
 class TestHello:
-    print("test")
+
+    def test_test(self):
+        print("Success!")
+        pass
