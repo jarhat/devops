@@ -21,32 +21,19 @@ import requests
 import sys
 
 def get_repos(username, password, team):
-    import pdb; pdb.set_trace()
-    url = "https://api.bitbucket.org/2.0/repositories/jarhat"
-
-    #headers = {
-    #           "Accept": "application/json",
-    #              "Authorization": "Bearer Zp53vlyxvowCjkwliXVGA987"
-    #              }
+    url = "https://api.bitbucket.org/2.0/repositories/%s" % user
 
     response = requests.request(
                "GET",
                   url,
-                     auth=('jarhat', 'ATBBaJGm7bFfWLf9uPGTE4VcKGP696330898')
+                     auth=(user, password)
                      )
 
-    print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
+    #print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
+
     links = [ v['links']['clone'][0]['href'] for v in json.loads(response.text)['values'] ]
     print(links)
-
-    sys.exit(0)
-
-    bitbucket_api_root = 'https://api.bitbucket.org/2.0/repositories/'
-    raw_request = requests.get(bitbucket_api_root + team, auth=HTTPBasicAuth(username, password))
-    dict_request = json.loads(raw_request.content.decode('utf-8'))
-    repos = dict_request['repositories']
-
-    return repos
+    return links
 
 def clone_all(repos):
     i = 1
@@ -71,42 +58,42 @@ def clone_all(repos):
 
     print('Successfully cloned {} out of {} repos'.format(success_clone, len(repos)))
 
-parser = argparse.ArgumentParser(description='clooney - clone all repos from a given BitBucket team/user')
+#parser = argparse.ArgumentParser(description='clooney - clone all repos from a given BitBucket team/user')
+#
+#parser.add_argument('-f',
+#                    '--full-path',
+#                    dest='full_path',
+#                    required=False,
+#                    help='Full path of directory which will hold the cloned repos')
+#
+#parser.add_argument('-u',
+#                    '--username',
+#                    dest="username",
+#                    required=True,
+#                    help='Bitbucket username')
+#
+#parser.add_argument('-p',
+#                    '--password',
+#                    dest="password",
+#                    required=False,
+#                    help='Bitbucket password')
+#
+#parser.add_argument('-t',
+#                    '--team',
+#                    dest="team",
+#                    required=False,
+#                    help='The target team/user')
+#
+#parser.set_defaults(full_path='')
+#parser.set_defaults(password='')
+#parser.set_defaults(team='')
+#
+#args = parser.parse_args()
 
-parser.add_argument('-f',
-                    '--full-path',
-                    dest='full_path',
-                    required=False,
-                    help='Full path of directory which will hold the cloned repos')
-
-parser.add_argument('-u',
-                    '--username',
-                    dest="username",
-                    required=True,
-                    help='Bitbucket username')
-
-parser.add_argument('-p',
-                    '--password',
-                    dest="password",
-                    required=False,
-                    help='Bitbucket password')
-
-parser.add_argument('-t',
-                    '--team',
-                    dest="team",
-                    required=False,
-                    help='The target team/user')
-
-parser.set_defaults(full_path='')
-parser.set_defaults(password='')
-parser.set_defaults(team='')
-
-args = parser.parse_args()
-
-username = args.username
-password = args.password
-full_path = args.full_path
-team = args.team
+username = "jarhat"
+password = "ATBBaJGm7bFfWLf9uPGTE4VcKGP696330898"
+full_path = "/tmp"
+team = ""
 
 if not team:
     team = username
