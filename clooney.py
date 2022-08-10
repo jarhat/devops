@@ -21,12 +21,12 @@ import requests
 import sys
 
 def get_repos(username, password, team):
-    url = "https://api.bitbucket.org/2.0/repositories/%s" % user
+    url = "https://api.bitbucket.org/2.0/repositories/%s" % username
 
     response = requests.request(
                "GET",
                   url,
-                     auth=(user, password)
+                     auth=(username, password)
                      )
 
     #print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
