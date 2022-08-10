@@ -50,7 +50,7 @@ def clone_all(repos):
             print('Cloning repo {} of {}. Repo name: {}'.format(i, len(repos), name))
             try:
                 #git_repo_loc = 'git@bitbucket.org:{}/{}.git'.format(team, name)
-                git_repo_loc = '{}:{}@bitbucket.org:{}/{}.git'.format(username, password team, name)
+                git_repo_loc = '{}:{}@bitbucket.org:{}/{}.git'.format(username, password, team, name)
                 Repo.clone_from(git_repo_loc, clone_path)
                 print('Cloning complete for repo {}'.format(name))
                 success_clone = success_clone + 1
