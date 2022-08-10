@@ -20,7 +20,7 @@ import os
 import requests
 import sys
 
-def get_repos(username, password, team):
+def get_repos():
     url = "https://api.bitbucket.org/2.0/repositories/%s" % username
 
     response = requests.request(
@@ -39,8 +39,9 @@ def clone_all(repos):
     i = 1
     success_clone = 0
     for repo in repos:
-        name = repo['name']
-        clone_path = os.path.abspath(os.path.join(full_path, name))
+        name = repo.split('/')[-1].split('.')[0]
+        #clone_path = os.path.abspath(os.path.join(full_path, name))
+        clone_path = os.path.abspath(os.path.join(os.getcwd(), name))
 
         if os.path.exists(clone_path):
             print('Skipping repo {} of {} because path {} exists'.format(i, len(repos), clone_path))
@@ -48,7 +49,8 @@ def clone_all(repos):
             # Folder name should be the repo's name
             print('Cloning repo {} of {}. Repo name: {}'.format(i, len(repos), name))
             try:
-                git_repo_loc = 'git@bitbucket.org:{}/{}.git'.format(team, name)
+                #git_repo_loc = 'git@bitbucket.org:{}/{}.git'.format(team, name)
+                git_repo_loc = '{}:{}@bitbucket.org:{}/{}.git'.format(username, password team, name)
                 Repo.clone_from(git_repo_loc, clone_path)
                 print('Cloning complete for repo {}'.format(name))
                 success_clone = success_clone + 1
@@ -102,7 +104,6 @@ if __name__ == '__main__':
     try:
         print('Fetching repos...')
         repos = get_repos(username, password, team)
-        sys.exit(0)
         print('Done: {} repos fetched'.format(len(repos)))
     except Exception as e:
         print('FATAL: Could not get repos: ({}). Terminating script.'.format(e))
