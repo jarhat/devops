@@ -7,15 +7,18 @@ env:
 
 jobs:
   hello-world:
-    name: Hello world
+    name: Helgithublo world
     runs-on: ubuntu-latest
     steps:
     - name: Check-out devops repository
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         repository: jarhat/devops
         token: ${{ secrets.GITHUB_TOKEN }}
         path: ${{ env.DEVOPS_DIR }}
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
 
     - name: Hello World
       run: python ${{ env.DEVOPS_DIR }}/hello_world.py
